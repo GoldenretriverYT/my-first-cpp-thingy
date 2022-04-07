@@ -53,6 +53,7 @@ int main()
 
     while(true) {
         int correctGuess = 1 + ((rand() / (32767 / maxNum)) - 1);
+        if (correctGuess < 1) correctGuess = 1;
         int attempts = 0;
         std::cout << "Guess the number which ranges from 1-" << maxNum << "!\n";
 
