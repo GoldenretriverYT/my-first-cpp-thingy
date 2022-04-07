@@ -7,37 +7,84 @@ bool is_integer(const std::string& s);
 
 int main()
 {
-    srand(time(NULL));
-    int correctGuess = 1 + ((rand() / 327.67)-1);
-    std::cout << "Guess the number which ranges from 1-100\n";
+    int maxNum = 100;
 
-    while (true) {
-        std::string guessAsString;
+    bool whileFlag = true;
+
+    while (whileFlag) {
+        std::cout << "Please select a difficulty level! (enter the number)\n";
+        std::cout << " 0. Way too easy\n";
+        std::cout << " 1. Easy\n";
+        std::cout << " 2. Medium\n";
+        std::cout << " 3. Hard\n";
+        std::cout << " 4. Very Hard\n";
+        std::cout << " 5. Impossible\n";
+
+        whileFlag = false;
+
+        std::string selectedLevel;
         std::cout << "> ";
-        std::cin >> guessAsString;
+        std::cin >> selectedLevel;
 
-        if (!is_integer(guessAsString)) {
-            std::cout << "Your guess is not a valid integer you fucking moron\n";
-            continue;
+        if (selectedLevel == "0") {
+            maxNum = 10;
         }
+        else if (selectedLevel == "1") {
+            maxNum = 50;
+        }
+        else if (selectedLevel == "2") {
+            maxNum = 100;
+        }
+        else if (selectedLevel == "3") {
+            maxNum = 250;
+        }
+        else if (selectedLevel == "4") {
+            maxNum = 1000;
+        }
+        else if (selectedLevel == "5") {
+            maxNum = 10000;
+        }
+        else {
+            whileFlag = true;
+            std::cout << "Invalid difficulty!\n";
+        }
+    }
+    srand(time(NULL));
 
-        int guess = std::stoi(guessAsString);
+    while(true) {
+        int correctGuess = 1 + ((rand() / (32767 / maxNum)) - 1);
+        int attempts = 0;
+        std::cout << "Guess the number which ranges from 1-" << maxNum << "!\n";
 
-        if (guess < 1 || guess > 100) {
-            std::cout << "Your guess is out of range??? Did you even try??\n";
-            continue;
-        }
+        while (true) {
+            std::string guessAsString;
+            std::cout << "> ";
+            std::cin >> guessAsString;
 
-        if (guess == correctGuess) {
-            std::cout << "ZAMN! Your guess is correct!! wohoo!!\n";
-            std::cout << "Guess the number which ranges from 1-100\n";
-            correctGuess = 1 + ((rand() / 327.67) - 1);
-        }
-        else if (guess > correctGuess) {
-            std::cout << "Its lower than that...\n";
-        }
-        else if (guess < correctGuess) {
-            std::cout << "Its higher than that...\n";
+            if (!is_integer(guessAsString) || guessAsString.length() > 6) {
+                std::cout << "Your guess is not a valid numer (only accepts 1-6 chars)\n";
+                continue;
+            }
+
+            int guess = std::stoi(guessAsString);
+
+            if (guess < 1 || guess > maxNum) {
+                std::cout << "Your guess is out of range??? Did you even try??\n";
+                continue;
+            }
+
+            attempts++;
+
+            if (guess == correctGuess) {
+                std::cout << "ZAMN! Your guess is correct!! It only took you " << attempts << " attempts!\n";
+                break;
+            }
+            else if (guess > correctGuess) {
+                std::cout << "Its lower than that...\n";
+            }
+            else if (guess < correctGuess) {
+                std::cout << "Its higher than that...\n";
+            }
         }
     }
 }
